@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Wasm Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <script type="text/javascript">
+
+        var Module = {
+            onRuntimeInitialized: function() {
+                console.log("onRuntimeInitialized###");
+                Module.ccall('wasm_init', null, [], []);
+                //Module._foobar(); // foobar was exported
+
+                function render() {
+                    Module.ccall('wasm_render', null, [], []); // Call the c function 'void wasm_render()'
+
+                    window.requestAnimationFrame(render);
+                }
+
+                window.requestAnimationFrame(render);
+            }
+        };
+
+        window.onload = function() {
+
+            console.log("window.onload");
+            //const canvas = document.getElementById('mycanvas');
+            //const container = document.getElementById('mycontainer');
+            //canvas.width = container.clientWidth;
+            //canvas.height = container.clientHeight;
+
+/*
+            var Module = {};
+            Module.canvas = canvas;
+
+            // onRuntimeInitialized() is called when all the compiled functions are ready.
+            // https://kripken.github.io/emscripten-site/docs/getting_started/FAQ.html#how-can-i-tell-when-the-page-is-fully-loaded-and-it-is-safe-to-call-compiled-functions
+            Module.onRuntimeInitialized = () => {
+            console.log("onRuntimeInitialized");
+            //WasmApp.run(container, canvas);
+            Module.ccall('wasm_init', null, [], []);
+
+            window.requestAnimationFrame(render);
+            };*/
+        }
+
+    </script>
+    <script src="a.out.js"></script>
+    <div id="mycontainer">
+        <canvas id="mycanvas" width="1280" height="720"></canvas>
+    </div>
+</body>
+</html>
